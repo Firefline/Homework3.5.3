@@ -8,7 +8,6 @@ class Figure
 protected:
     std::string name = "Фигура";
     int sides_count = 0;
-    bool accuracy;
     int a = 0, b = 0, c = 0, d = 0;
     int A = 0, B = 0, C = 0, D = 0;
 public:
@@ -20,35 +19,35 @@ public:
     {
         return sides_count;
     }
-    int get_side_a()
+    int get_a()
     {
         return a;
     }
-    int get_side_b()
+    int get_b()
     {
         return b;
     }
-    int get_side_c()
+    int get_c()
     {
         return c;
     }
-    int get_side_d()
+    int get_d()
     {
         return d;
     }
-    int get_angle_A()
+    int get_A()
     {
         return A;
     }
-    int get_angle_B()
+    int get_B()
     {
         return B;
     }
-    int get_angle_C()
+    int get_C()
     {
         return C;
     }
-    int get_angle_D()
+    int get_D()
     {
         return D;
     }
@@ -56,10 +55,9 @@ public:
     {
         if (sides_count == 0)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     virtual void print_info()
     {
@@ -77,66 +75,54 @@ public:
 class Triangle : public Figure
 {
 public:
-    Triangle() : Figure()
+    Triangle(int a, int b, int c, int A, int B, int C) : Figure()
     {
         name = "Треугольник";
         sides_count = 3;
-        a = 10;
-        b = 20;
-        c = 30;
-        A = 50;
-        B = 60;
-        C = 70;
+        this->a = a;
+        this->b = b;
+        this->c = c;
+        this->A = A;
+        this->B = B;
+        this->C = C;
     }
     bool check() override
     {
         if (sides_count == 3 && (A+B+C == 180))
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
         Figure::print_info();
-        std::cout << "Стороны: a=" << get_side_a() << " b=" << get_side_b() << " c=" << get_side_c();
-        if (get_side_d() != 0)
-        {
-            std::cout << " d=" << get_side_d() << std::endl;
-        }
-        else { std::cout << std::endl; }
-        std::cout << "Углы: A=" << get_angle_A() << " B=" << get_angle_B() << " C=" << get_angle_C();
-        if (get_angle_D() != 0)
-        {
-            std::cout << " D=" << get_angle_D() << std::endl;
-        }
-        else { std::cout << std::endl; }
+        std::cout << "Стороны: a=" << get_a() << " b=" << get_b() << " c=" << get_c() << std::endl;
+        std::cout << "Углы: A=" << get_A() << " B=" << get_B() << " C=" << get_C() << std::endl;
         std::cout << std::endl;
     }
 };
 class Right_triangle : public Triangle
 {
 public:
-    Right_triangle() : Triangle()
+    Right_triangle(int a, int b, int c, int A, int B) : Triangle(0, 0, 0, 0, 0, 0)
     {
         name = "Прямоугольный треугольник";
         sides_count = 3;
-        a = 10;
-        b = 20;
-        c = 30;
-        A = 50;
-        B = 60;
+        this->a = a;
+        this->b = b;
+        this->c = c;
+        this->A = A;
+        this->B = B;
         C = 90;
     }
     bool check() override
     {
         if (C == 90)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -146,25 +132,24 @@ public:
 class Isosceles_triangle : public Triangle
 {
 public:
-    Isosceles_triangle() : Triangle()
+    Isosceles_triangle(int a, int b, int A, int B) : Triangle(0, 0, 0, 0, 0, 0)
     {
         name = "Равнобедренный треугольник";
         sides_count = 3;
-        a = 10;
-        b = 20;
-        c = 30;
-        A = 50;
-        B = 60;
-        C = 50;
+        this->a = a;
+        this->b = b;
+        c = a;
+        this->A = A;
+        this->B = B;
+        C = A;
     }
     bool check() override
     {
         if (a == c && A == C)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -174,25 +159,24 @@ public:
 class Equilateral_triangle : public Triangle
 {
 public:
-    Equilateral_triangle() : Triangle()
+    Equilateral_triangle(int a) : Triangle(0, 0, 0, 0, 0, 0)
     {
         name = "Равносторонний треугольник";
         sides_count = 3;
-        a = 30;
-        b = 30;
-        c = 30;
+        this->a = a;
+        b = a;
+        c = a;
         A = 60;
-        B = 60;
-        C = 60;
+        B = A;
+        C = A;
     }
     bool check() override
     {
         if (a == b && b == c && a == c && A == 60 && B == 60 && C == 60)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -202,70 +186,58 @@ public:
 class Quadrangle : public Figure
 {
 public:
-    Quadrangle() : Figure()
+    Quadrangle(int a, int b) : Figure()
     {
         name = "Четырёхугольник";
         sides_count = 4;
-        a = 10;
-        b = 20;
-        c = 30;
-        d = 40;
-        A = 50;
-        B = 60;
-        C = 70;
-        D = 80;
+        this->a = a;
+        this->b = b;
+        c = a;
+        d = b;
+        A = 90;
+        B = A;
+        C = A;
+        D = A;
     }
     bool check() override
     {
         if (sides_count == 4 && (A + B + C + D == 360))
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
         Figure::print_info();
-        std::cout << "Стороны: a=" << get_side_a() << " b=" << get_side_b() << " c=" << get_side_c();
-        if (get_side_d() != 0)
-        {
-            std::cout << " d=" << get_side_d() << std::endl;
-        }
-        else { std::cout << std::endl; }
-        std::cout << "Углы: A=" << get_angle_A() << " B=" << get_angle_B() << " C=" << get_angle_C();
-        if (get_angle_D() != 0)
-        {
-            std::cout << " D=" << get_angle_D() << std::endl;
-        }
-        else { std::cout << std::endl; }
+        std::cout << "Стороны: a=" << get_a() << " b=" << get_b() << " c=" << get_c() << " d=" << get_d() << std::endl;
+        std::cout << "Углы: A=" << get_A() << " B=" << get_B() << " C=" << get_C() << " D=" << get_D() << std::endl;
         std::cout << std::endl;
     }
 };
 class Square : public Quadrangle
 {
 public:
-    Square() : Quadrangle()
+    Square(int a) : Quadrangle(0, 0)
     {
         name = "Квадрат";
         sides_count = 4;
-        a = 20;
-        b = 20;
-        c = 20;
-        d = 20;
+        this->a = a;
+        b = a;
+        c = a;
+        d = a;
         A = 90;
-        B = 90;
-        C = 90;
-        D = 90;
+        B = A;
+        C = A;
+        D = A;
     }
     bool check() override
     {
         if (a == b && b == c && c == d && a == c && a == d && b == d && A == 90 && B == 90 && C == 90 && D == 90)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -275,27 +247,26 @@ public:
 class Parallelogram : public Quadrangle
 {
 public:
-    Parallelogram() : Quadrangle()
+    Parallelogram(int a, int b, int A, int B) : Quadrangle(0, 0)
     {
         name = "Параллелограмм";
         sides_count = 4;
-        a = 20;
-        b = 30;
-        c = 20;
-        d = 30;
-        A = 30;
-        B = 40;
-        C = 30;
-        D = 40;
+        this->a = a;
+        this->b = b;
+        c = a;
+        d = b;
+        this->A = A;
+        this->B = B;
+        C = A;
+        D = B;
     }
     bool check() override
     {
         if (a == c && b == d && A == C && B == D)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -305,27 +276,26 @@ public:
 class Rectangle : public Parallelogram
 {
 public:
-    Rectangle() : Parallelogram()
+    Rectangle(int a, int b) : Parallelogram(0, 0, 0, 0)
     {
         name = "Прямоугольник";
         sides_count = 4;
-        a = 10;
-        b = 20;
-        c = 10;
-        d = 20;
+        this->a = a;
+        this->b = b;
+        c = a;
+        d = b;
         A = 90;
-        B = 90;
-        C = 90;
-        D = 90;
+        B = A;
+        C = A;
+        D = A;
     }
     bool check() override
     {
         if (a == c && b == d && A == 90 && B == 90 && C == 90 && D == 90)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -335,27 +305,26 @@ public:
 class Rhomb : public Parallelogram
 {
 public:
-    Rhomb() : Parallelogram()
+    Rhomb(int a, int A, int B) : Parallelogram(0, 0, 0, 0)
     {
         name = "Ромб";
         sides_count = 4;
-        a = 30;
-        b = 30;
-        c = 30;
-        d = 30;
-        A = 30;
-        B = 40;
-        C = 30;
-        D = 40;
+        this->a = a;
+        b = a;
+        c = a;
+        d = a;
+        this->A = A;
+        this->B = B;
+        C = A;
+        D = B;
     }
     bool check() override
     {
         if (a == b && b == c && c == d && a == c && a == d && b == d && A == C && B == D)
         {
-            accuracy = true;
+            return true;
         }
-        else { accuracy = false; }
-        return accuracy;
+        else { return false; }
     }
     void print_info() override
     {
@@ -368,15 +337,15 @@ int main(int argc, char** argv)
     setlocale(LC_ALL, "Russian");
 
     Figure figure;
-    Triangle triangle;
-    Right_triangle right_triangle;
-    Isosceles_triangle isosceles_triangle;
-    Equilateral_triangle equilateral_triangle;
-    Quadrangle quadrangle;
-    Square square;
-    Parallelogram parallelogram;
-    Rectangle rectangle;
-    Rhomb rhomb;
+    Triangle triangle(10, 20, 30, 50, 60, 70);
+    Right_triangle right_triangle(10, 20, 30, 50, 60);
+    Isosceles_triangle isosceles_triangle(10, 20, 50, 60);
+    Equilateral_triangle equilateral_triangle(30);
+    Quadrangle quadrangle(10, 20);
+    Square square(20);
+    Parallelogram parallelogram(20, 30, 30, 40);
+    Rectangle rectangle(10, 20);
+    Rhomb rhomb(30, 30, 40);
 
     figure.print_info();
     std::cout << std::endl;
@@ -390,6 +359,7 @@ int main(int argc, char** argv)
     rectangle.print_info();
     rhomb.print_info();
 }
+
 
 // Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
 // Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
